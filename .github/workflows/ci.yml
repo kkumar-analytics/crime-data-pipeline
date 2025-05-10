@@ -45,6 +45,7 @@ jobs:
             target: dev
             outputs:
               dev:
+                type: snowflake
                 account: $SNOWFLAKE_ACCOUNT
                 user: $SNOWFLAKE_USER
                 password: $SNOWFLAKE_PASSWORD
