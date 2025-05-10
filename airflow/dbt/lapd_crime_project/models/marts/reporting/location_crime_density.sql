@@ -26,6 +26,7 @@ WITH crime_data AS (
 SELECT
     lat_bucket,
     lon_bucket,
+    CONCAT(ROUND(lat_bucket, 3), ',', ROUND(lon_bucket, 3)) AS location,
     crime_code,
     crime_description,
     month,
