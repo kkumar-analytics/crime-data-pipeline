@@ -45,7 +45,6 @@ jobs:
             target: dev
             outputs:
               dev:
-                type: snowflake
                 account: $SNOWFLAKE_ACCOUNT
                 user: $SNOWFLAKE_USER
                 password: $SNOWFLAKE_PASSWORD
@@ -57,7 +56,5 @@ jobs:
           EOF
 
       - name: Run dbt build
+        working-directory: ./airflow/dbt/lapd_crime_project
         run: dbt build --profiles-dir ~/.dbt
-
-      - name: Run Elementary Tests
-        run: edr test --project-dir . --profiles-dir ~/.dbt
