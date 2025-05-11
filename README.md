@@ -81,6 +81,20 @@ CSV (Google Cloud Storage)
 
 ---
 
+### 📸 Dashboards & Visualizations
+
+#### Elementary Data Quality Dashboard
+You can explore the [Elementary Data Quality Dashboard](https://storage.googleapis.com/lapd-elementary-report/elementary_report.html) to check data freshness, schema changes, and test results.
+
+#### Data Lineage of dbt Models
+View the [dbt Data Lineage](https://storage.googleapis.com/lapd-elementary-report/dbt_docs/index.html) to understand how data flows from raw ingestion to the final reporting tables.
+
+#### Looker Dashboard
+Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea0-fbae-4b4e-8e96-e3f4805171dd) to interact with crime distribution by area, crime type, and other key metrics.
+
+
+---
+
 ## 🧱 Snowflake Schema Design (Star Schema)
 
 ### Dimension Tables
