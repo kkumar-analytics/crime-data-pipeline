@@ -17,7 +17,7 @@ The Snowflake data warehouse uses a star schema centered around the `fact_crime`
 You can view the full data model:
 
 - [📄 PDF version](docs/lapd_data_model.pdf)
-- [💻 Editable dbdiagram.io file](data_model/lapd_star_schema.dbml)
+- [💻 dbdiagram.io file](data_model/lapd_star_schema.dbml)
 
 This diagram captures the fact and dimension tables, bridge relationships, and final reporting tables derived via dbt.
 
