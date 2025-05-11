@@ -56,6 +56,10 @@ jobs:
                 threads: 4
           EOF
 
+      - name: Run dbt deps
+        working-directory: ./airflow/dbt/lapd_crime_project
+        run: dbt deps --profiles-dir ~/.dbt
+
       - name: Run dbt build
         working-directory: ./airflow/dbt/lapd_crime_project
         run: dbt build --profiles-dir ~/.dbt
