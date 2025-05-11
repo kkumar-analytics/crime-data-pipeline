@@ -1,5 +1,7 @@
+# GitHub Actions workflow for dbt CI pipeline
 name: dbt CI Pipeline
 
+# Triggers the workflow on push to main or on pull requests
 on:
   push:
     branches: [ main ]
@@ -7,8 +9,10 @@ on:
 
 jobs:
   dbt-build:
+    # Specifies the environment the job runs in
     runs-on: ubuntu-latest
 
+    # Environment variables pulled from GitHub secrets
     env:
       SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
       SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
@@ -19,14 +23,17 @@ jobs:
       SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
 
     steps:
+      # Step 1: Checkout the repository code
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
+      # Step 3: Install dbt and dependencies
       - name: Install dbt and dependencies
         run: |
           python -m pip install --upgrade pip
@@ -37,6 +44,7 @@ jobs:
             elementary-data==0.18.1 \
             pyarrow==18.1.0
 
+      # Step 4: Create a dbt profiles.yml with Snowflake credentials
       - name: Create dbt profiles.yml
         run: |
           mkdir -p ~/.dbt
@@ -56,10 +64,12 @@ jobs:
                 threads: 4
           EOF
 
+      # Step 5: Install any dbt packages (dependencies)
       - name: Run dbt deps
         working-directory: ./airflow/dbt/lapd_crime_project
         run: dbt deps --profiles-dir ~/.dbt
 
+      # Step 6: Run dbt build (includes run, test, snapshot, and seed)
       - name: Run dbt build
         working-directory: ./airflow/dbt/lapd_crime_project
         run: dbt build --profiles-dir ~/.dbt
