@@ -82,13 +82,13 @@ models:
         description: Date of entry into the fact table.
         tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: date
+              column_type: datetime
 
       - name: dlu
         description: Date of last update in the fact table.
         tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: date
+              column_type: datetime
 
     tests:
       - elementary.schema_changes

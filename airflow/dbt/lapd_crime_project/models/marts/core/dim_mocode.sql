@@ -9,3 +9,4 @@ select
   description,
   current_timestamp() as dlu
 from {{ ref('mocodes') }}
+where mocodes is not null
