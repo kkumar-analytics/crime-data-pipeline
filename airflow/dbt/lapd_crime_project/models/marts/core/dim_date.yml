@@ -53,7 +53,3 @@ models:
         description: "The date when the record was inserted or updated in the table."
         tests:
           - not_null
-      - name: dlu
-        description: "The last date when the record was updated."
-        tests:
-          - not_null
