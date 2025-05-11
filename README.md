@@ -85,27 +85,26 @@ CSV (Google Cloud Storage)
 
 ### Dimension Tables
 
-* **dim\_area**: Area code and name (25 police reporting districts).
-* **dim\_crime\_code**: Crime codes with detailed description and category.
-* **dim\_location**: Geographical location info, cross streets, lat/lon.
-* **dim\_mocode**: Behavioral patterns associated with the crime (multi-valued, normalized via bridge).
-* **dim\_premise**: Type of premises where the crime occurred.
-* **dim\_status**: Status of the crime (e.g., Cleared, Open).
-* **dim\_time**: Date/time breakdown for fact partitioning and seasonal trends.
-* **dim\_victim**: Victim demographics, including gender, descent, and age group.
-* **dim\_weapon**: Weapon used in the crime.
+* **dim_area**: Area code and name (25 police reporting districts).
+* **dim_crime_code**: Crime codes with detailed descriptions and categories.
+* **dim_location**: Geographical location info, including cross streets and coordinates.
+* **dim_mocode**: Behavioral patterns associated with the crime (multi-valued, normalized via bridge).
+* **dim_premise**: Type of premises where the crime occurred.
+* **dim_status**: Disposition/status of the case (e.g., Cleared, Open, Pending).
+* **dim_time**: Breakdown of time components (hour, part of day) used for trend analysis.
+* **dim_date**: Calendar date dimension supporting time-based reporting and partitioning.
+* **dim_victim**: Victim demographics such as gender, descent, and age group.
+* **dim_weapon**: Weapon involved in the crime incident.
 
-### Bridge Table
 
-* **bridge\_crime\_mocode**: Connects crimes to one or more modus operandi codes (many-to-many).
+### Bridge Tables
+
+* **bridge_crime_mocode**: Connects each crime (`dr_no`) to one or more modus operandi codes (many-to-many).
+* **bridge_crime_code**: Allows a single crime report to map to multiple crime codes (many-to-many), useful when multiple offenses are involved in a single incident.
 
 ### Fact Table
 
-* **fact\_crime**: Central grain is one record per crime report (`dr_no`). Links to all dimensions via surrogate keys. Contains measures such as:
-
-  * Number of victims
-  * Domestic violence flag
-  * Crime occurrence timestamp
+* **fact\_crime**: Central grain is one record per crime report (`dr_no`). Links to all dimensions via surrogate keys.
 
 ### Reporting Tables (for BI Layer)
 
@@ -128,7 +127,7 @@ CSV (Google Cloud Storage)
 ### Transformation with dbt
 
 * All raw tables modeled as staging (`stg_*`), then transformed to dimension/fact layers.
-* SCD Type 2 implemented for dimension changes (e.g., `dim_status`, `dim_crime_code`).
+* SCD Type 2 implemented for dimension changes (e.g., `dim_location`).
 * Incremental load logic applied to fact and some dimensions.
 * `seeds/` used for static reference data (e.g., `vict_descent` codes).
 
@@ -153,41 +152,29 @@ CSV (Google Cloud Storage)
 
 ---
 
-## 📁 Project Structure
-
-```
-├── data_loader/             # Python scripts to load CSV into Snowflake
-├── dbt_lapd_crime/          # dbt Core project
-│   ├── models/
-│   │   ├── staging/
-│   │   ├── dimensions/
-│   │   ├── facts/
-│   │   ├── bridge/
-│   │   ├── reporting/
-│   ├── seeds/
-│   ├── snapshots/
-│   └── tests/
-├── airflow/                 # DAG to orchestrate loading & transformations
-├── dashboards/              # Looker dashboard definitions (if included)
-└── README.md
-```
-
----
-
 ## 📊 Sample Use Cases
 
-* How does weapon usage vary by crime type?
-* What are the trends in victim demographics over time?
+* What areas in Los Angeles report the highest crime rates?
+* How does crime distribution vary by crime type?
+* What are the patterns in crime based on victim descent?
+* How does crime frequency change throughout the day?
+* Are certain age and gender groups more frequently targeted?
+* What types of weapons are used during different times of the day?
+* Where are the geographic hotspots for criminal activity?
+* What are the monthly crime trends in each police reporting area?
+* How do different crime types exhibit seasonal patterns?
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer             | Tool/Service                 |
-| ----------------- | ---------------------------- |
-| Storage & Compute | Snowflake                    |
-| Orchestration     | Apache Airflow (Astro CLI)   |
-| Transformation    | dbt Core                     |
-| Data Validation   | Elementary Data              |
-| Ingestion         | Python + Snowflake Connector |
-| Visualization     | Looker                       |
+| Layer               | Tool/Service                 |
+| ------------------- | ---------------------------- |
+| Storage & Compute   | Snowflake                    |
+| Orchestration       | Apache Airflow (Astro CLI)   |
+| Transformation      | dbt Core                     |
+| Data Validation     | Elementary Data              |
+| Ingestion           | Python + Snowflake Connector |
+| Visualization       | Looker                       |
+| CI/CD               | GitHub Actions               |
+
