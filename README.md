@@ -26,12 +26,58 @@ This diagram captures the fact and dimension tables, bridge relationships, and f
 ## 🔧 Project Architecture
 
 ```
-CSV → Python (Data Loader) → Snowflake (Raw + Star Schema)
-    → dbt (Transformations, SCD2, Incremental Models, Seeds, Tests)
-    → Elementary (Data Quality & Testing Observability)
-    → Airflow (Orchestration via Astro CLI)
-    → Looker (BI Dashboards)
+CSV (Google Cloud Storage)
+→ Python (Data Loader: Ingestion + Incremental Load)
+→ Snowflake (Raw Tables + Star Schema)
+→ dbt (Transformations, SCD2, Incremental Models, Seeds, Tests)
+→ dbt docs + Elementary HTML reports stored in GCS
+→ Elementary (Data Quality & Testing Observability)
+→ Airflow (Orchestration using Astro CLI)
+→ Looker (BI Dashboards)
+→ GitHub Actions (CI for dbt + tests)
 ```
+
+### 🔍 Highlights
+
+- **📥 Data Ingestion**:
+  - Source LAPD CSV file is stored in a **Google Cloud Storage bucket**.
+  - Python scripts handle **initial ingestion**, **data validation**, and **incremental loads** into Snowflake.
+
+- **🛠️ dbt Transformations**:
+  - Raw tables modeled into staging and transformed into a **Star Schema** (facts/dimensions).
+  - Implements:
+    - **Incremental models**
+    - **SCD Type 2**
+    - **Seeded reference data**
+    - **Generic & custom dbt tests**
+  - **dbt docs** and **Elementary HTML reports** are generated and stored in GCS for traceability.
+
+- **🧪 Data Quality with Elementary**:
+  - Tracks and reports on:
+    - **Data freshness**
+    - **Schema changes**
+    - **Anomaly detection**
+    - **Test coverage & failures**
+
+- **🧬 Orchestration via Airflow (Astro CLI)**:
+  - DAGs orchestrate the full pipeline including ingestion, dbt transformations, and data quality validation.
+  - Runs can be scheduled or triggered manually.
+
+- **🔁 CI/CD with GitHub Actions**:
+  - Automates:
+    - dbt runs and tests
+    - Data quality validation
+
+- **📊 BI Layer with Looker**:
+   - Dashboards are built using final reporting tables to deliver insights on crime trends and patterns across multiple dimensions.
+   - Key reports include:
+    - **Crime distribution by area and type**
+    - **Victim demographics (age, sex, descent)**
+    - **Weapon usage by time of day**
+    - **Crime patterns by part of day**
+    - **Monthly crime trends by area**
+    - **Seasonality of crime types**
+    - **LA crime hotspot map (geo visualization)**
 
 ---
 
