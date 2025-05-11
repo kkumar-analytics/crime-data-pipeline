@@ -4,6 +4,25 @@ This is a full-stack data pipeline project built as a portfolio to demonstrate e
 
 ---
 
+## 📐 Data Model & ERD
+
+The Snowflake data warehouse uses a star schema centered around the `fact_crime` table. Key design features include:
+
+- Surrogate keys across all dimension tables
+- Slowly Changing Dimensions (Type 2) where applicable
+- Bridge tables for many-to-many relationships (e.g., crime ↔ MOCODE)
+
+### Entity-Relationship Diagram (ERD)
+
+You can view the full data model:
+
+- [📄 PDF version](docs/lapd_data_model.pdf)
+- [💻 Editable dbdiagram.io file](data_model/lapd_star_schema.dbml)
+
+This diagram captures the fact and dimension tables, bridge relationships, and final reporting tables derived via dbt.
+
+---
+
 ## 🔧 Project Architecture
 
 ```
