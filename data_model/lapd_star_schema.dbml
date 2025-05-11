@@ -1,87 +1,218 @@
-Table fact_crime_incident {
-    DR_NO varchar [pk]             // Unique incident ID
-    DATE_RPTD_KEY int              // FK to dim_date (for reporting date)
-    DATE_OCC_KEY int               // FK to dim_date (for occurrence date)
-    TIME_OCC int
-    AREA_KEY int                 // FK to dim_area
-    RPT_DIST_NO varchar
-    CRM_CD_1_KEY int             // FK to dim_crime_code
-    CRM_CD_2 varchar
-    CRM_CD_3 varchar
-    CRM_CD_4 varchar
-    LOCATION_KEY int             // FK to dim_location
-    VICTIM_KEY int               // FK to dim_victim
-    PREMIS_KEY int               // FK to dim_premises
-    WEAPON_KEY int               // FK to dim_weapon
-    STATUS_KEY int               // FK to dim_status
+Project "LAPD Crime Data Model" {
+  database_type: "Snowflake"
 }
 
-Table dim_date {
-    DATE_KEY int [pk]           // Surrogate key
-    FULL_DATE date
-    YEAR int
-    MONTH int
-    MONTH_NAME varchar
-    DAY int
-    DAY_OF_WEEK int
-    DAY_NAME varchar
-    WEEK_OF_YEAR int
-    QUARTER int
-    IS_WEEKEND boolean
+Table FCT_CRIME_EVENTS {
+  DR_NO NUMBER
+  DATE_RPTD_ID VARCHAR(32)
+  DATE_OCC_ID VARCHAR(32)
+  TIME_OCC_ID VARCHAR(32)
+  VICTIMS_ID VARCHAR(32)
+  WEAPONS_ID VARCHAR(32)
+  STATUS_DIM_ID VARCHAR(32)
+  AREA_DIM_ID VARCHAR(32)
+  PREMIS_DIM_ID VARCHAR(32)
+  LOCATION_DIM_ID VARCHAR(32)
+  DOE TIMESTAMP
+  DLU TIMESTAMP
 }
 
-Table dim_area {
-    AREA_KEY int [pk]           // Surrogate key
-    AREA int
-    AREA_NAME varchar
+Table DIM_WEAPON {
+  ID VARCHAR(32) [pk]
+  CODE NUMBER
+  DESCRIPTION VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for weapon information."
 }
 
-Table dim_crime_code {
-    CRM_CD_KEY int [pk]       // Surrogate key
-    CRM_CD varchar
-    CRM_CD_DESC varchar
-    PART_1_2 varchar
+Table DIM_VICTIM {
+  ID VARCHAR(32) [pk]
+  AGE NUMBER
+  SEX VARCHAR
+  DESCENT VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for victim demographics."
 }
 
-Table dim_location {
-    LOCATION_KEY int [pk]       // Surrogate key
-    LOCATION varchar
-    CROSS_STREET varchar
-    LAT float
-    LON float
+Table DIM_TIME {
+  ID VARCHAR(32) [pk]
+  HOUR_OF_DAY NUMBER
+  MINUTE_OF_HOUR NUMBER
+  PART_OF_DAY VARCHAR(9)
+  DOE TIMESTAMP
+  note: "Dimension table for time-based information."
 }
 
-Table dim_victim {
-    VICTIM_KEY int [pk]       // Surrogate key
-    VICT_AGE int
-    VICT_SEX varchar
-    VICT_DESCENT varchar
+Table DIM_STATUS {
+  ID VARCHAR(32) [pk]
+  CODE VARCHAR
+  DESCRIPTION VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for status codes."
 }
 
-Table dim_premises {
-    PREMIS_KEY int [pk]       // Surrogate key
-    PREMIS_CD int
-    PREMIS_DESC varchar
+Table DIM_PREMISE {
+  ID VARCHAR(32) [pk]
+  CODE NUMBER
+  DESCRIPTION VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for premise types."
 }
 
-Table dim_weapon {
-    WEAPON_KEY int [pk]       // Surrogate key
-    WEAPON_USED_CD varchar
-    WEAPON_DESC varchar
+Table DIM_MOCODE {
+  ID VARCHAR(32) [pk]
+  CODE NUMBER
+  DESCRIPTION VARCHAR
+  DLU TIMESTAMP
+  note: "Dimension table for MO (modus operandi) codes."
 }
 
-Table dim_status {
-    STATUS_KEY int [pk]       // Surrogate key
-    STATUS varchar
-    STATUS_DESC varchar
+Table DIM_LOCATION {
+  ID VARCHAR(32) [pk]
+  LOCATION VARCHAR
+  CROSS_STREET VARCHAR
+  LAT FLOAT
+  LON FLOAT
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  DBT_SCD_ID VARCHAR(32)
+  DBT_UPDATED_AT TIMESTAMP
+  DBT_VALID_FROM TIMESTAMP
+  DBT_VALID_TO TIMESTAMP
+  note: "Dimension table for location information, including SCD (Slowly Changing Dimension) attributes."
 }
 
-Ref: fact_crime_incident.DATE_RPTD_KEY > dim_date.DATE_KEY
-Ref: fact_crime_incident.DATE_OCC_KEY > dim_date.DATE_KEY
-Ref: fact_crime_incident.AREA_KEY > dim_area.AREA_KEY
-Ref: fact_crime_incident.CRM_CD_1_KEY > dim_crime_code.CRM_CD_KEY
-Ref: fact_crime_incident.LOCATION_KEY > dim_location.LOCATION_KEY
-Ref: fact_crime_incident.VICTIM_KEY > dim_victim.VICTIM_KEY
-Ref: fact_crime_incident.PREMIS_KEY > dim_premises.PREMIS_KEY
-Ref: fact_crime_incident.WEAPON_KEY > dim_weapon.WEAPON_KEY
-Ref: fact_crime_incident.STATUS_KEY > dim_status.STATUS_KEY
+Table DIM_DATE {
+  ID VARCHAR(32) [pk]
+  FULL_DATE DATE
+  YEAR NUMBER(4)
+  MONTH NUMBER(2)
+  MONTH_NAME VARCHAR
+  DAY NUMBER(2)
+  DAY_OF_WEEK NUMBER(2)
+  DAY_NAME VARCHAR
+  WEEK_OF_YEAR NUMBER(2)
+  QUARTER NUMBER(2)
+  IS_WEEKEND BOOLEAN
+  DOE TIMESTAMP
+  note: "Dimension table for date-related attributes."
+}
+
+Table DIM_CRIME_CODE {
+  ID VARCHAR(32) [pk]
+  CODE NUMBER
+  DESCRIPTION VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for crime codes."
+}
+
+Table DIM_AREA {
+  ID VARCHAR(32) [pk]
+  CODE NUMBER
+  NAME VARCHAR
+  SOURCE_DLU TIMESTAMP
+  DLU TIMESTAMP
+  note: "Dimension table for area information."
+}
+
+Table BRIDGE_MOCODE {
+  DR_NO NUMBER
+  MOCODE_DIM_ID VARCHAR(32)
+  DOE TIMESTAMP
+  DLU TIMESTAMP
+  note: "Bridge table for many-to-many relationship between crime events and MO codes."
+}
+
+Table BRIDGE_CRIME_CODE {
+  DR_NO NUMBER
+  CRIME_CODE_DIM_ID VARCHAR(32)
+  DOE TIMESTAMP
+  DLU TIMESTAMP
+  note: "Bridge table for many-to-many relationship between crime events and crime codes."
+}
+
+Table WEAPON_TYPE_DISTRIBUTION {
+  AREA_NAME VARCHAR
+  PART_OF_DAY VARCHAR(9)
+  WEAPON_TYPE VARCHAR
+  WEAPON_COUNT NUMBER(18)
+  TOTAL_CRIMES NUMBER(30)
+  WEAPON_TYPE_PERCENTAGE NUMBER(28,2)
+  note: "Reporting table derived from FCT_CRIME_EVENTS, DIM_WEAPON, DIM_AREA, DIM_TIME."
+}
+
+Table VICTIM_DEMOGRAPHICS_SUMMARY {
+  AGE_RANGE VARCHAR(7)
+  VICTIM_SEX VARCHAR
+  VICTIM_DESCENT VARCHAR
+  INCIDENT_COUNT NUMBER(18)
+  note: "Reporting table derived from FCT_CRIME_EVENTS and DIM_VICTIM."
+}
+
+Table LOCATION_CRIME_DENSITY {
+  LAT_BUCKET FLOAT
+  LON_BUCKET FLOAT
+  LOCATION VARCHAR
+  CRIME_CODE NUMBER
+  CRIME_DESCRIPTION VARCHAR
+  MONTH VARCHAR
+  YEAR NUMBER(4)
+  MONTH_NUMBER NUMBER(2)
+  TIME_OF_DAY VARCHAR(9)
+  CRIME_COUNT NUMBER(18)
+  TOTAL_CRIMES_IN_GRID NUMBER(30)
+  CRIME_DENSITY_PERCENTAGE NUMBER(28,2)
+  note: "Reporting table derived from FCT_CRIME_EVENTS, DIM_LOCATION, DIM_CRIME_CODE, DIM_DATE, DIM_TIME."
+}
+
+Table CRIME_CODE_SEASONALITY {
+  CRIME_CODE NUMBER
+  CRIME_DESCRIPTION VARCHAR
+  MONTH VARCHAR
+  MONTH_NUMBER NUMBER(2)
+  CRIME_COUNT NUMBER(18)
+  TOTAL_BY_CRIME NUMBER(30)
+  MONTH_PERCENTAGE NUMBER(28,2)
+  note: "Reporting table derived from FCT_CRIME_EVENTS, DIM_CRIME_CODE, DIM_DATE."
+}
+
+Table AREA_MONTHLY_CRIME_SUMMARY {
+  AREA_CODE NUMBER
+  AREA_NAME VARCHAR
+  YEAR NUMBER(4)
+  MONTH NUMBER(2)
+  CRIME_COUNT NUMBER(18)
+  DLU TIMESTAMP
+  note: "Reporting table derived from FCT_CRIME_EVENTS, DIM_AREA, DIM_DATE."
+}
+
+// FCT_CRIME_EVENTS to Dimension Tables
+Ref: FCT_CRIME_EVENTS.DATE_RPTD_ID > DIM_DATE.ID
+Ref: FCT_CRIME_EVENTS.DATE_OCC_ID > DIM_DATE.ID
+Ref: FCT_CRIME_EVENTS.TIME_OCC_ID > DIM_TIME.ID
+Ref: FCT_CRIME_EVENTS.VICTIMS_ID > DIM_VICTIM.ID
+Ref: FCT_CRIME_EVENTS.WEAPONS_ID > DIM_WEAPON.ID
+Ref: FCT_CRIME_EVENTS.STATUS_DIM_ID > DIM_STATUS.ID
+Ref: FCT_CRIME_EVENTS.AREA_DIM_ID > DIM_AREA.ID
+Ref: FCT_CRIME_EVENTS.PREMIS_DIM_ID > DIM_PREMISE.ID
+Ref: FCT_CRIME_EVENTS.LOCATION_DIM_ID > DIM_LOCATION.ID
+
+// Bridge Tables
+Ref: BRIDGE_MOCODE.DR_NO > FCT_CRIME_EVENTS.DR_NO
+Ref: BRIDGE_MOCODE.MOCODE_DIM_ID > DIM_MOCODE.ID
+Ref: BRIDGE_CRIME_CODE.DR_NO > FCT_CRIME_EVENTS.DR_NO
+Ref: BRIDGE_CRIME_CODE.CRIME_CODE_DIM_ID > DIM_CRIME_CODE.ID
+
+// references for reporting table visual links
+Ref: WEAPON_TYPE_DISTRIBUTION.AREA_NAME > DIM_AREA.NAME
+Ref: WEAPON_TYPE_DISTRIBUTION.WEAPON_TYPE > DIM_WEAPON.DESCRIPTION
+Ref: VICTIM_DEMOGRAPHICS_SUMMARY.VICTIM_SEX > DIM_VICTIM.SEX
+Ref: LOCATION_CRIME_DENSITY.LOCATION > DIM_LOCATION.LOCATION
+Ref: LOCATION_CRIME_DENSITY.CRIME_CODE > DIM_CRIME_CODE.CODE
+Ref: CRIME_CODE_SEASONALITY.CRIME_CODE > DIM_CRIME_CODE.CODE
+Ref: AREA_MONTHLY_CRIME_SUMMARY.AREA_CODE > DIM_AREA.CODE
