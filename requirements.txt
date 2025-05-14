@@ -1,11 +1,5 @@
-click==8.2.0
-keyring==25.6.0
-packaging==25.0
-pendulum==3.1.0
-protobuf==6.30.2
-pytest==8.3.5
-python-dotenv==1.1.0
-python_dateutil==2.9.0.post0
-ruamel.base==1.0.0
-snowflake_connector_python==3.14.0
-snowflake_snowpark_python==1.31.0
+dbt-core==1.9.4
+dbt-snowflake==1.9.2
+google-cloud-storage==2.19.0
+elementary-data==0.18.1
+pyarrow==18.1.0
