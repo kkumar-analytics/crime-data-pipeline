@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 def load_config():
     """Load configuration from environment variables."""
-    load_dotenv()
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
     config = {
         "SNOWFLAKE_ACCOUNT": os.getenv("SNOWFLAKE_ACCOUNT"),
         "SNOWFLAKE_DATABASE": os.getenv("SNOWFLAKE_DATABASE"),

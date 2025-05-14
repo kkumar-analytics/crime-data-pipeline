@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def load_config() -> Dict[str, Optional[str]]:
     """Loads configuration from environment variables and keyring."""
-    load_dotenv()
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
     config = {
         "SNOWFLAKE_ACCOUNT": os.getenv("SNOWFLAKE_ACCOUNT"),
         "SNOWFLAKE_DATABASE": os.getenv("SNOWFLAKE_DATABASE"),
