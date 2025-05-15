@@ -34,6 +34,7 @@ CSV (Google Cloud Storage)
 → Elementary (Data Quality & Testing Observability)
 → Airflow (Orchestration using Astro CLI)
 → Looker (BI Dashboards)
+→ Streamlit App (Interactive Q&A powered by SQL Agent + LLM)
 → GitHub Actions (CI for dbt + tests)
 ```
 
