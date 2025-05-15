@@ -180,6 +180,26 @@ Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea
 
 ---
 
+## 🤖 Interactive Q&A App: LAPD Crime Explorer
+
+This project includes an interactive **Streamlit** app powered by a **SQL Agent** that enables natural language querying of LAPD crime data. It combines a large language model (LLM) with Snowflake SQL to generate dynamic answers based on the star schema data warehouse.
+
+### Features
+
+- Ask natural language questions about crime trends, victim demographics, weapons, locations, and more.
+- The SQL Agent translates questions into optimized Snowflake SQL queries.
+- Provides fast, data-driven answers directly from the warehouse.
+- Demonstrates integration of AI, SQL, and data engineering.
+
+### Running the App
+
+To launch the app locally, run:
+
+```bash
+streamlit run app.py
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer               | Tool/Service                 |
