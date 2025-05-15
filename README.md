@@ -1,6 +1,6 @@
 # LAPD Crime Data Pipeline Project
 
-This is a full-stack data pipeline project built as a portfolio to demonstrate end-to-end data engineering and analytics skills using modern tools and best practices. The dataset used includes Los Angeles Police Department (LAPD) crime reports and code mappings. The pipeline processes data from raw ingestion to analytics and reporting.
+This is a full-stack data pipeline project built as a portfolio to demonstrate end-to-end data engineering and analytics skills using modern tools and best practices. The dataset used includes Los Angeles Police Department (LAPD) crime reports and code mappings. The pipeline processes data from raw ingestion to analytics, reporting, and interactive querying using AI.
 
 ---
 
@@ -37,6 +37,7 @@ CSV (Google Cloud Storage)
 → GitHub Actions (CI for dbt + tests)
 ```
 
+
 ### 🔍 Highlights
 
 - **📥 Data Ingestion**:
@@ -63,13 +64,18 @@ CSV (Google Cloud Storage)
   - DAGs orchestrate the full pipeline including ingestion, dbt transformations, and data quality validation.
   - Runs can be scheduled or triggered manually.
 
+- **🧠 Interactive Q&A App with SQL Agent**:
+  - Combines a Large Language Model (LLM) with Snowflake SQL to enable **natural language querying** of crime data.
+  - The SQL Agent translates questions into optimized SQL queries dynamically executed on Snowflake.
+  - Enables real-time data-driven answers on crime trends, victim demographics, weapons, locations, and more.
+
 - **🔁 CI/CD with GitHub Actions**:
   - Automates:
     - dbt runs and tests
     - Data quality validation
 
 - **📊 BI Layer with Looker**:
-   - Dashboards are built using final reporting tables to deliver insights on crime trends and patterns across multiple dimensions.
+   - Dashboards built using final reporting tables deliver insights on crime trends and patterns across multiple dimensions.
    - Key reports include:
     - **Crime distribution by area and type**
     - **Victim demographics (age, sex, descent)**
@@ -92,7 +98,6 @@ View the [dbt Data Lineage](https://storage.googleapis.com/lapd-elementary-repor
 #### Looker Dashboard
 Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea0-fbae-4b4e-8e96-e3f4805171dd) to interact with crime distribution by area, crime type, and other key metrics.
 
-
 ---
 
 ## 🧱 Snowflake Schema Design (Star Schema)
@@ -110,7 +115,6 @@ Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea
 * **dim_victim**: Victim demographics such as gender, descent, and age group.
 * **dim_weapon**: Weapon involved in the crime incident.
 
-
 ### Bridge Tables
 
 * **bridge_crime_mocode**: Connects each crime (`dr_no`) to one or more modus operandi codes (many-to-many).
@@ -118,7 +122,7 @@ Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea
 
 ### Fact Table
 
-* **fact\_crime**: Central grain is one record per crime report (`dr_no`). Links to all dimensions via surrogate keys.
+* **fact_crime**: Central grain is one record per crime report (`dr_no`). Links to all dimensions via surrogate keys.
 
 ### Reporting Tables (for BI Layer)
 
@@ -149,7 +153,6 @@ Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea
 
 * Built-in `dbt tests` for schema and data validation.
 * [Elementary](https://elementary-data.github.io/) used for:
-
   * Test result lineage and alerts
   * Data freshness
   * Run history & coverage
@@ -186,7 +189,7 @@ This project includes an interactive **Streamlit** app powered by a **SQL Agent*
 
 ![LAPD Crime Explorer Demo](docs/lapd_chatbot_demo.gif)
 
-> 📽️ *Above: Trailer of the Q&A app answering a sample question in real-time*
+> 📽️ *Above: Q&A app answering a sample question in real-time*
 
 ### Features
 
@@ -198,6 +201,7 @@ This project includes an interactive **Streamlit** app powered by a **SQL Agent*
 ### Running the App
 
 To launch the app locally, run:
+
 streamlit run app.py
 
 
@@ -213,5 +217,6 @@ streamlit run app.py
 | Data Validation     | Elementary Data              |
 | Ingestion           | Python + Snowflake Connector |
 | Visualization       | Looker                       |
+| Interactive Q&A     | Streamlit + SQL Agent + LLM  |
 | CI/CD               | GitHub Actions               |
 
