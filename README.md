@@ -153,7 +153,7 @@ Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea
 ### Testing and Observability
 
 * Built-in `dbt tests` for schema and data validation.
-* [Elementary](https://elementary-data.github.io/) used for:
+* [Elementary](https://docs.elementary-data.com/introduction) used for:
   * Test result lineage and alerts
   * Data freshness
   * Run history & coverage
