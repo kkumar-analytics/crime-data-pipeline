@@ -97,7 +97,7 @@ You can explore the [Elementary Data Quality Dashboard](https://storage.googleap
 View the [dbt Data Lineage](https://storage.googleapis.com/lapd-elementary-report/dbt_docs/index.html) to understand how data flows from raw ingestion to the final reporting tables.
 
 #### Looker Dashboard
-Explore the [Looker Dashboard](https://lookerstudio.google.com/reporting/caf20ea0-fbae-4b4e-8e96-e3f4805171dd) to interact with crime distribution by area, crime type, and other key metrics.
+![Looker Dashboard Screenshot](docs/looker_dashboard.png)
 
 ---
 
