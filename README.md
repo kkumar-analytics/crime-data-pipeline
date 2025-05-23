@@ -1,6 +1,6 @@
-# LAPD Crime Data Pipeline Project
+# Crime Data Pipeline Project
 
-This is a full-stack data pipeline project built as a portfolio to demonstrate end-to-end data engineering and analytics skills using modern tools and best practices. The dataset used includes Los Angeles Police Department (LAPD) crime reports and code mappings. The pipeline processes data from raw ingestion to analytics, reporting, and interactive querying using AI.
+This is a full-stack data pipeline project built as a portfolio to demonstrate end-to-end data engineering and analytics skills using modern tools and best practices. The dataset used includes  crime reports and code mappings. The pipeline processes data from raw ingestion to analytics, reporting, and interactive querying using AI.
 
 ---
 
@@ -42,7 +42,7 @@ CSV (Google Cloud Storage)
 ### 🔍 Highlights
 
 - **📥 Data Ingestion**:
-  - Source LAPD CSV file is stored in a **Google Cloud Storage bucket**.
+  - Source crime CSV file is stored in a **Google Cloud Storage bucket**.
   - Python scripts handle **initial ingestion**, **data validation**, and **incremental loads** into Snowflake.
 
 - **🛠️ dbt Transformations**:
